@@ -1,11 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUser } from "../services/github";
+import { getUserRepos } from "../services/github";
 
 export function Profile() {
     const { username } = useParams();
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [repos, setRepos] = useState<any[]>([]);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         async function fetchUser() {
@@ -23,6 +26,20 @@ export function Profile() {
         fetchUser();
     }, [username]);
 
+    useEffect(() => {
+        async function fetchRepos() {
+            if (!username) return;
+
+            try {
+                const data = await getUserRepos(username, page);
+                setRepos(data);
+            } catch (error) {
+                console.log("Error fetching repos")
+            }
+        }
+        fetchRepos();
+    }, [username])
+
     if (loading) return <p>Loading...</p>
 
     return (
@@ -30,7 +47,22 @@ export function Profile() {
             <img src={user?.avatar_url} width={100} />
             <h1>{user?.name}</h1>
             <p>{user?.bio}</p>
+
+
+            <h2>Repositories:</h2>
+            {repos.map((repo) => (
+                <div key={repo.id}>
+                    <a href={repo.html_url} target="_blanck">
+                        {repo.name}
+                    </a>
+
+                </div>
+            ))}
         </div>
+
+
+
+
     );
 
 
