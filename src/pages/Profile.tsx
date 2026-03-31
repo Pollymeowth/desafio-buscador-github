@@ -9,6 +9,7 @@ export function Profile() {
     const [loading, setLoading] = useState(true);
     const [repos, setRepos] = useState<any[]>([]);
     const [page, setPage] = useState(1);
+    const [loadingRepos, setLoadingRepos] = useState(false);
 
     useEffect(() => {
         async function fetchUser() {
@@ -30,17 +31,45 @@ export function Profile() {
         async function fetchRepos() {
             if (!username) return;
 
+            setLoadingRepos(true)
+
             try {
                 const data = await getUserRepos(username, page);
-                setRepos(data);
+                setRepos((prev) => [...prev, ...data]);
             } catch (error) {
                 console.log("Error fetching repos")
+            } finally {
+                setLoadingRepos(false)
             }
         }
         fetchRepos();
-    }, [username])
+    }, [page, username])
+
+
+    useEffect(() => {
+        function handleScroll() {
+            if (loadingRepos) return;
+            
+            const scrollTop = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const fullHeight = document.documentElement.scrollHeight;
+
+            if (scrollTop + windowHeight >= fullHeight - 50) {
+                setPage((prev) => prev + 1);
+            }
+        }
+
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        }
+
+    }, []);
+
+
 
     if (loading) return <p>Loading...</p>
+
 
     return (
         <div>
@@ -52,19 +81,13 @@ export function Profile() {
             <h2>Repositories:</h2>
             {repos.map((repo) => (
                 <div key={repo.id}>
-                    <a href={repo.html_url} target="_blanck">
+                    <a href={repo.html_url} target="_blank">
                         {repo.name}
                     </a>
-
                 </div>
             ))}
+            {loadingRepos && <p>Loading more repos...</p>}
         </div>
-
-
-
-
     );
-
-
 
 }
