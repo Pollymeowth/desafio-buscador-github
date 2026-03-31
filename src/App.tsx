@@ -1,11 +1,17 @@
-import { Button } from "@chakra-ui/react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Home } from "./pages/Home";
+import { Profile } from "./pages/Profile";
 
-function App() {
+
+function App(){
   return (
-    <div style={{ padding: 20 }}>
-      <Button colorPalette="teal">Teste</Button>
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element= {<Home/>}/>
+        <Route path="/profile/:username" element = {<Profile/>}/>
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App;
