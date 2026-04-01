@@ -14,5 +14,6 @@
   "sort_created": "Newest",
   "sort_updated": "Recently updated",
   "sort_pushed": "Recent push",
-  "sort_full_name": "Name"
+  "sort_full_name": "Name",
+  "scroll_to_top": "Go to top"
 }

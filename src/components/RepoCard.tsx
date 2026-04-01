@@ -1,6 +1,7 @@
 import { Box, Text, Flex } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { type Repo } from "../schemas/github";
+import { FiStar } from "react-icons/fi";
 
 type RepoCardProps = {
   repo: Repo;
@@ -30,7 +31,10 @@ export function RepoCard({ repo }: RepoCardProps) {
       )}
 
       <Flex gap={4} mt={2} align="center">
-        <Text fontSize="sm">⭐ {repo.stargazers_count}</Text>
+        <Flex align="center" gap={1}>
+          <FiStar size={14} color="gray" />
+          <Text fontSize="sm">{repo.stargazers_count}</Text>
+        </Flex>
         <Text fontSize="sm">
           {t("updated")} {daysAgo(repo.updated_at)} {t("days_ago")}
         </Text>

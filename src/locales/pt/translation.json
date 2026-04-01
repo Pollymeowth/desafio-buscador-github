@@ -14,5 +14,7 @@
   "sort_created": "Mais novos",
   "sort_updated": "Atualizados recentemente",
   "sort_pushed": "Push recente",
-  "sort_full_name": "Nome"
+  "sort_full_name": "Nome",
+  "scroll_to_top": "Ir para o topo"
+
 }

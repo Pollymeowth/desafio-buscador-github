@@ -10,6 +10,9 @@ import { Flex, Box, Heading, Spinner, Text } from "@chakra-ui/react";
 import { UserCard } from "../components/UserCard";
 import { RepoCard } from "../components/RepoCard";
 import { SortSelect } from "../components/SortSelect";
+import { Header } from "../components/Header";
+
+import { ScrollToTopButton } from "../components/ScrollToTopButton";
 
 export function Profile() {
     const { username } = useParams();
@@ -107,36 +110,40 @@ export function Profile() {
     if (!user) return null;
 
     return (
-        <Flex
-            p={{ base: 4, md: 8 }}
-            gap={8}
-            maxW="1200px"
-            mx="auto"
-            direction={{ base: "column", md: "row" }}
-        >
-            {/* USER */}
-            <Box w={{ base: "100%", md: "300px" }} flexShrink={0}>
-                <UserCard user={user} />
-            </Box>
-            {/* REPOS */}
-            <Box flex="1">
-                <Flex justify="space-between" align="center" mb={4}>
-                    <Heading size="md">{t("repositories")}</Heading>
-                    <SortSelect value={sort} onChange={(val) => setSort(val)} />
-                </Flex>
-                {repos.map((repo) => (
-                    <RepoCard key={repo.id} repo={repo} />
-                ))}
-                {loadingRepos && (
-                    <Flex justify="center" mt={4}>
-                        <Spinner />
+        <Box>
+            <Header />
+            <Flex
+                p={{ base: 4, md: 8 }}
+                gap={8}
+                maxW="1200px"
+                mx="auto"
+                direction={{ base: "column", md: "row" }}
+            >
+                {/* USER */}
+                <Box w={{ base: "100%", md: "300px" }} flexShrink={0}>
+                    <UserCard user={user} />
+                </Box>
+                {/* REPOS */}
+                <Box flex="1">
+                    <Flex justify="space-between" align="flex-end" mb={4}>
+                        <Heading size="md">{t("repositories")}</Heading>
+                        <SortSelect value={sort} onChange={(val) => setSort(val)} />
                     </Flex>
-                )}
-                {!hasMore && repos.length === 0 && (
-                    <Text color="gray.500">No repositories found.</Text>
-                )}
-            </Box>
-        </Flex>
+                    {repos.map((repo) => (
+                        <RepoCard key={repo.id} repo={repo} />
+                    ))}
+                    {loadingRepos && (
+                        <Flex justify="center" mt={4}>
+                            <Spinner />
+                        </Flex>
+                    )}
+                    {!hasMore && repos.length === 0 && (
+                        <Text color="gray.500">No repositories found.</Text>
+                    )}
+                </Box>
+            </Flex>
+            <ScrollToTopButton />
+        </Box>
     );
 
 }

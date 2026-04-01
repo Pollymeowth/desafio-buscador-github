@@ -1,6 +1,8 @@
 import { Box, Image, Text, Button, Flex } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { type User } from "../schemas/github";
+import { FiUsers, FiHeart, FiBriefcase, FiMapPin, FiMail, FiLink, FiTwitter } from "react-icons/fi";
+
 type UserCardProps = {
   user: User;
 };
@@ -8,7 +10,7 @@ type UserCardProps = {
 export function UserCard({ user }: UserCardProps) {
   const { t } = useTranslation();
   return (
-    <Box p={4} borderWidth="1px" borderRadius="lg" w={{ base: "100%", md: "300px" }} flexShrink={0}>
+    <Box p={4} borderWidth="1px" borderColor="gray.200" borderRadius="xl" boxShadow="sm" bg="white" w={{ base: "100%", md: "300px" }} flexShrink={0}>
       <Image
         borderRadius="full"
         boxSize="80px"
@@ -24,29 +26,37 @@ export function UserCard({ user }: UserCardProps) {
           {user.bio}
         </Text>
       )}
-      <Flex gap={1} mt={3} align="center">
-        <Text fontSize="sm">👥 {user.followers} {t("followers")}</Text>
+
+      <Flex gap={2} mt={3} align="center">
+        <FiUsers size={14} color="gray" />
+        <Text fontSize="sm">{user.followers} {t("followers")}</Text>
       </Flex>
-      <Flex gap={1} align="center">
-        <Text fontSize="sm">❤️ {user.following} {t("following")}</Text>
+      <Flex gap={2} align="center">
+        <FiHeart size={14} color="gray" />
+        <Text fontSize="sm">{user.following} {t("following")}</Text>
       </Flex>
+
       {user.company && (
-        <Flex gap={1} mt={2} align="center">
-          <Text fontSize="sm">🏢 {user.company}</Text>
+        <Flex gap={2} mt={2} align="center">
+          <FiBriefcase size={14} color="gray" />
+          <Text fontSize="sm">{user.company}</Text>
         </Flex>
       )}
       {user.location && (
-        <Flex gap={1} align="center">
-          <Text fontSize="sm">📍 {user.location}</Text>
+        <Flex gap={2} align="center">
+          <FiMapPin size={14} color="gray" />
+          <Text fontSize="sm">{user.location}</Text>
         </Flex>
       )}
       {user.email && (
-        <Flex gap={1} align="center">
-          <Text fontSize="sm">✉️ {user.email}</Text>
+        <Flex gap={2} align="center">
+          <FiMail size={14} color="gray" />
+          <Text fontSize="sm">{user.email}</Text>
         </Flex>
       )}
       {user.blog && (
-        <Flex gap={1} align="center">
+        <Flex gap={2} align="center">
+          <FiLink size={14} color="gray" />
           <Text
             as="a"
             href={user.blog.startsWith("http") ? user.blog : `https://${user.blog}`}
@@ -55,12 +65,13 @@ export function UserCard({ user }: UserCardProps) {
             fontSize="sm"
             color="purple.500"
           >
-            🔗 {user.blog}
+            {user.blog}
           </Text>
         </Flex>
       )}
       {user.twitter_username && (
-        <Flex gap={1} align="center">
+        <Flex gap={2} align="center">
+          <FiTwitter size={14} color="gray" />
           <Text
             as="a"
             href={`https://twitter.com/${user.twitter_username}`}
@@ -69,10 +80,11 @@ export function UserCard({ user }: UserCardProps) {
             fontSize="sm"
             color="purple.500"
           >
-            🐦 @{user.twitter_username}
+            @{user.twitter_username}
           </Text>
         </Flex>
       )}
+
       <Button
         mt={4}
         w="full"
