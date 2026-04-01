@@ -1,4 +1,5 @@
 import { Input, Button, Flex } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
 
 type SearchBarProps = {
   value: string;
@@ -8,22 +9,24 @@ type SearchBarProps = {
 
 
 export function SearchBar({ value, onChange, onSearch } : SearchBarProps) {
-  return (
-    <Flex gap={2}>
-      <Input
-        placeholder="Search"
-        value={value}
-        onChange={onChange}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            onSearch();
-          }
-        }}
-      />
+    const { t } = useTranslation();
 
-      <Button colorScheme="purple" onClick={onSearch}>
-        Search
-      </Button>
-    </Flex>
+    return (
+        <Flex gap={2}>
+            <Input
+                placeholder={t("search_placeholder")}
+                value={value}
+                onChange={onChange}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        onSearch();
+                    }
+                }}
+            />
+
+            <Button colorScheme="purple" onClick={onSearch}>
+                {t("search_button")}
+            </Button>
+        </Flex>
   );
 }
