@@ -1,0 +1,18 @@
+{
+  "search_title_1": "Search",
+  "search_title_2": "d_evs",
+  "search_placeholder": "Search",
+  "search_button": "Search",
+  "not_found": "No users found with this name",
+  "contact": "Contact",
+  "followers": "followers",
+  "following": "following",
+  "repositories": "Repositories",
+  "updated": "Updated",
+  "days_ago": "days ago",
+  "sort_label": "Sort by",
+  "sort_created": "Newest",
+  "sort_updated": "Recently updated",
+  "sort_pushed": "Recent push",
+  "sort_full_name": "Name"
+}
