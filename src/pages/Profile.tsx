@@ -119,11 +119,11 @@ export function Profile() {
                 mx="auto"
                 direction={{ base: "column", md: "row" }}
             >
-                {/* USER */}
+                
                 <Box w={{ base: "100%", md: "300px" }} flexShrink={0}>
                     <UserCard user={user} />
                 </Box>
-                {/* REPOS */}
+                
                 <Box flex="1">
                     <Flex justify="space-between" align="flex-end" mb={4}>
                         <Heading size="md">{t("repositories")}</Heading>
