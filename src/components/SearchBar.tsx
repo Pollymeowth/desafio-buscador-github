@@ -12,7 +12,7 @@ export function SearchBar({ value, onChange, onSearch } : SearchBarProps) {
     const { t } = useTranslation();
 
     return (
-        <Flex gap={2}>
+        <Flex gap={2} w={{ base: "90vw", md: "500px" }}>
             <Input
                 placeholder={t("search_placeholder")}
                 value={value}

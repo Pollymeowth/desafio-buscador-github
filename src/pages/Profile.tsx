@@ -107,9 +107,15 @@ export function Profile() {
     if (!user) return null;
 
     return (
-        <Flex p={8} gap={8} maxW="1200px" mx="auto">
+        <Flex
+            p={{ base: 4, md: 8 }}
+            gap={8}
+            maxW="1200px"
+            mx="auto"
+            direction={{ base: "column", md: "row" }}
+        >
             {/* USER */}
-            <Box w="300px" flexShrink={0}>
+            <Box w={{ base: "100%", md: "300px" }} flexShrink={0}>
                 <UserCard user={user} />
             </Box>
             {/* REPOS */}

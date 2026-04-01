@@ -1,4 +1,4 @@
-import { Button, VStack, Heading, Text, Input } from "@chakra-ui/react";
+import { VStack, Heading, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../services/github";

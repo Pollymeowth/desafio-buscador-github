@@ -8,7 +8,7 @@ type UserCardProps = {
 export function UserCard({ user }: UserCardProps) {
   const { t } = useTranslation();
   return (
-    <Box p={4} borderWidth="1px" borderRadius="lg">
+    <Box p={4} borderWidth="1px" borderRadius="lg" w={{ base: "100%", md: "300px" }} flexShrink={0}>
       <Image
         borderRadius="full"
         boxSize="80px"
