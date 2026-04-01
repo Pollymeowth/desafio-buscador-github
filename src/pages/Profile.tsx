@@ -3,6 +3,16 @@ import { useEffect, useState } from "react";
 import { getUser } from "../services/github";
 import { getUserRepos } from "../services/github";
 
+import {
+  Flex,
+  Box,
+  Heading,
+  Spinner
+} from "@chakra-ui/react";
+
+import { UserCard } from "../components/UserCard";
+import { RepoCard } from "../components/RepoCard";
+
 export function Profile() {
     const { username } = useParams();
     const [user, setUser] = useState<any>(null);
@@ -10,6 +20,7 @@ export function Profile() {
     const [repos, setRepos] = useState<any[]>([]);
     const [page, setPage] = useState(1);
     const [loadingRepos, setLoadingRepos] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
         async function fetchUser() {
@@ -28,28 +39,40 @@ export function Profile() {
     }, [username]);
 
     useEffect(() => {
+        setRepos([]);
+        setPage(1);
+        setHasMore(true);
+    }, [username]);
+
+    useEffect(() => {
         async function fetchRepos() {
             if (!username) return;
 
-            setLoadingRepos(true)
+            setLoadingRepos(true);
 
             try {
                 const data = await getUserRepos(username, page);
-                setRepos((prev) => [...prev, ...data]);
+
+                if (data.length === 0) {
+                    setHasMore(false);
+                } else {
+                    setRepos((prev) => [...prev, ...data]);
+                }
             } catch (error) {
-                console.log("Error fetching repos")
+                console.log("Error fetching repos");
             } finally {
-                setLoadingRepos(false)
+                setLoadingRepos(false);
             }
         }
+
         fetchRepos();
-    }, [page, username])
+    }, [page, username]);
 
 
     useEffect(() => {
         function handleScroll() {
-            if (loadingRepos) return;
-            
+            if (loadingRepos || !hasMore) return;
+
             const scrollTop = window.scrollY;
             const windowHeight = window.innerHeight;
             const fullHeight = document.documentElement.scrollHeight;
@@ -64,30 +87,38 @@ export function Profile() {
             window.removeEventListener("scroll", handleScroll);
         }
 
-    }, []);
+    }, [loadingRepos, hasMore]);
 
-
-
-    if (loading) return <p>Loading...</p>
-
+    if (loading) return <p>Loading user...</p>;
 
     return (
-        <div>
-            <img src={user?.avatar_url} width={100} />
-            <h1>{user?.name}</h1>
-            <p>{user?.bio}</p>
+        <Flex p={8} gap={8} maxW="1200px" mx="auto">
 
+            {/* USER */}
+            <Box w="300px">
+                <UserCard user={user} />
+            </Box>
 
-            <h2>Repositories:</h2>
-            {repos.map((repo) => (
-                <div key={repo.id}>
-                    <a href={repo.html_url} target="_blank">
-                        {repo.name}
-                    </a>
-                </div>
-            ))}
-            {loadingRepos && <p>Loading more repos...</p>}
-        </div>
+            {/* REPOS */}
+            <Box flex="1">
+
+                <Heading size="md" mb={4}>
+                    Repositories
+                </Heading>
+
+                {repos.map((repo) => (
+                    <RepoCard key={repo.id} repo={repo} />
+                ))}
+
+                {loadingRepos && (
+                    <Flex justify="center" mt={4}>
+                        <Spinner />
+                    </Flex>
+                )}
+
+            </Box>
+
+        </Flex>
     );
 
 }

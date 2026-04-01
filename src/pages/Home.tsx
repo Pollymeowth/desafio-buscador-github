@@ -2,6 +2,7 @@ import { Input, Button, VStack, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "../services/github";
+import { SearchBar } from "../components/SearchBar";
 
 export function Home() {
     const [username, setUsername] = useState("");
@@ -17,30 +18,40 @@ export function Home() {
             setError("User not found")
         }
 
-
     }
 
     return (
-        <VStack gap={4} p={6}>
-            <Heading>Search Dev's</Heading>
-            <form onSubmit={(e) => {
-                e.preventDefault();
-                handleSearch();
-            }}>
-                <label htmlFor="username">Username:</label>
+        <VStack
+            height="100vh"
+            justify="center"
+            align="center"
+            gap={6}
+        >
+            <Heading
+                fontSize="5xl"
+                bgGradient="linear(to-r, blue.400, purple.500)"
+                bgClip="text"
+            >
+                Search Devs
+            </Heading>
 
-                <Input
-                    id="username"
-                    placeholder="Search"
+            <VStack gap={3}>
+                <SearchBar
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setUsername(e.target.value);
+                        setError("");
+                    }}
+                    onSearch={handleSearch}
                 />
-                {error && <p style={{ color: "red" }}>{error}</p>}
-                <Button type="submit">Search</Button>
-            </form>
 
+                {error && (
+                    <Heading size="sm" color="red.400">
+                        {error}
+                    </Heading>
+                )}
+            </VStack>
         </VStack>
-
-    )
+    );
 
 }
