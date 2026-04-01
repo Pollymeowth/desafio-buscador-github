@@ -2,35 +2,41 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUser } from "../services/github";
 import { getUserRepos } from "../services/github";
+import { type User, type Repo } from "../schemas/github";
+import { useTranslation } from "react-i18next";
 
-import {
-  Flex,
-  Box,
-  Heading,
-  Spinner
-} from "@chakra-ui/react";
+import { Flex, Box, Heading, Spinner, Text } from "@chakra-ui/react";
 
 import { UserCard } from "../components/UserCard";
 import { RepoCard } from "../components/RepoCard";
+import { SortSelect } from "../components/SortSelect";
 
 export function Profile() {
     const { username } = useParams();
-    const [user, setUser] = useState<any>(null);
+    const { t } = useTranslation();
+
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-    const [repos, setRepos] = useState<any[]>([]);
+    const [userError, setUserError] = useState("");
+
+    const [repos, setRepos] = useState<Repo[]>([]);
     const [page, setPage] = useState(1);
     const [loadingRepos, setLoadingRepos] = useState(false);
     const [hasMore, setHasMore] = useState(true);
+    const [sort, setSort] = useState("created");
 
     useEffect(() => {
         async function fetchUser() {
             if (!username) return;
 
+            setLoading(true);
+            setUserError("");
+
             try {
                 const data = await getUser(username);
                 setUser(data);
             } catch (error) {
-                console.log("Error fetching user")
+                setUserError(t("not_found"));
             } finally {
                 setLoading(false)
             }
@@ -42,7 +48,7 @@ export function Profile() {
         setRepos([]);
         setPage(1);
         setHasMore(true);
-    }, [username]);
+    }, [username, sort]);
 
     useEffect(() => {
         async function fetchRepos() {
@@ -51,7 +57,7 @@ export function Profile() {
             setLoadingRepos(true);
 
             try {
-                const data = await getUserRepos(username, page);
+                const data = await getUserRepos(username, page, sort);
 
                 if (data.length === 0) {
                     setHasMore(false);
@@ -66,7 +72,7 @@ export function Profile() {
         }
 
         fetchRepos();
-    }, [page, username]);
+    }, [page, username, sort]);
 
 
     useEffect(() => {
@@ -89,35 +95,41 @@ export function Profile() {
 
     }, [loadingRepos, hasMore]);
 
-    if (loading) return <p>Loading user...</p>;
+    if (loading) return <Spinner mt={8} />;
+
+    if (userError) {
+        return (
+            <Flex justify="center" mt={8}>
+                <Text color="red.400">{userError}</Text>
+            </Flex>
+        );
+    }
+    if (!user) return null;
 
     return (
         <Flex p={8} gap={8} maxW="1200px" mx="auto">
-
             {/* USER */}
-            <Box w="300px">
+            <Box w="300px" flexShrink={0}>
                 <UserCard user={user} />
             </Box>
-
             {/* REPOS */}
             <Box flex="1">
-
-                <Heading size="md" mb={4}>
-                    Repositories
-                </Heading>
-
+                <Flex justify="space-between" align="center" mb={4}>
+                    <Heading size="md">{t("repositories")}</Heading>
+                    <SortSelect value={sort} onChange={(val) => setSort(val)} />
+                </Flex>
                 {repos.map((repo) => (
                     <RepoCard key={repo.id} repo={repo} />
                 ))}
-
                 {loadingRepos && (
                     <Flex justify="center" mt={4}>
                         <Spinner />
                     </Flex>
                 )}
-
+                {!hasMore && repos.length === 0 && (
+                    <Text color="gray.500">No repositories found.</Text>
+                )}
             </Box>
-
         </Flex>
     );
 
