@@ -1,22 +1,41 @@
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Flex } from "@chakra-ui/react";
+import { useTranslation } from "react-i18next";
+import { type Repo } from "../schemas/github";
 
+type RepoCardProps = {
+  repo: Repo;
+};
 
-export function RepoCard({ repo }) {
-    return (
-        <Box p={4} borderBottom="1px solid #eee">
-            <a href={repo.html_url} target="_blank" rel="noreferrer">
-                <Text fontWeight="bold" color="blue.500">
-                    {repo.name}
-                </Text>
-            </a>
+function daysAgo(dateStr: string): number {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
 
-            <Text color="gray.600">
-                {repo.description}
-            </Text>
+export function RepoCard({ repo }: RepoCardProps) {
+  const { t } = useTranslation();
 
-            <Text mt={2} fontSize="sm">
-                ⭐ {repo.stargazers_count} • 🍴 {repo.forks_count}
-            </Text>
-        </Box>
-    );
+  return (
+    <Box py={4} borderBottom="1px solid" borderColor="gray.200">
+
+      <Text fontWeight="bold" fontSize="md">
+        <a href={repo.html_url} target="_blank" rel="noreferrer">
+          {repo.name}
+        </a>
+      </Text>
+
+      {repo.description && (
+        <Text color="gray.600" fontSize="sm" mt={1}>
+          {repo.description}
+        </Text>
+      )}
+
+      <Flex gap={4} mt={2} align="center">
+        <Text fontSize="sm">⭐ {repo.stargazers_count}</Text>
+        <Text fontSize="sm">
+          {t("updated")} {daysAgo(repo.updated_at)} {t("days_ago")}
+        </Text>
+      </Flex>
+
+    </Box>
+  );
 }
