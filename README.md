@@ -2,6 +2,8 @@
 
 > 🇧🇷 [Português](#-português) | 🇺🇸 [English](#-english)
 
+🌐 **Deploy:** <a href="https://desafio-buscador-github.vercel.app" target="_blank">https://desafio-buscador-github.vercel.app</a>
+
 ---
 
 ## 🇧🇷 Português
@@ -54,13 +56,40 @@ npm run dev
 
 ## 🇺🇸 English
 
-This project was developed as part of a technical challenge for a internship position at **Petize**. The goal was to build an app that consumes the public GitHub API to search for developer profiles and display their repositories.
+This project was developed as part of a technical challenge for an internship position at **Petize**. The goal was to build an app that consumes the public GitHub API to search for developer profiles and display their repositories.
+
+It was my first contact with some technologies like **Zod** and **i18next**, and I used this challenge as an opportunity to learn in practice!
+
+### ✨ Features
+
+- Search GitHub users by username
+- View full profile: photo, bio, followers, company, location, email, website and Twitter
+- List repositories with **infinite scroll** (10 at a time)
+- **Sort repositories** by different criteria
+- **Error message** when a user is not found
+- **Responsive** for desktop and mobile
+- Supports **Portuguese and English** with i18next
+
+### 🛠️ Technologies
+
+- React + TypeScript
+- Vite
+- Chakra UI v2
+- React Router
+- i18next
+- Zod
+- Axios
 
 ### 🚀 How to run
 
 ```bash
+# Clone the repository
 git clone https://github.com/Pollymeowth/desafio-buscador-github.git
+
+# Install dependencies
 npm install
+
+# Start dev server
 npm run dev
 ```
 
