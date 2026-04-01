@@ -2,7 +2,7 @@
 
 > 🇧🇷 [Português](#-português) | 🇺🇸 [English](#-english)
 
-🌐 **Deploy:** [https://desafio-buscador-github.vercel.app](https://desafio-buscador-github.vercel.app)
+🌐 **Deploy:** <a href="https://desafio-buscador-github.vercel.app" target="_blank">https://desafio-buscador-github.vercel.app</a>
 
 ---
 
