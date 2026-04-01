@@ -8,14 +8,12 @@ import { useTranslation } from "react-i18next";
 export function Home() {
     const [username, setUsername] = useState("");
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
 
     const { t } = useTranslation();
 
     async function handleSearch() {
         if (!username.trim()) return;
-        setLoading(true);
         setError("")
         try {
             await getUser(username);
